@@ -21,10 +21,10 @@ rho = 1; % Cube
 %rho = [1,100,1,100,100];% Memspheres
 %rho = [1,1,1];% Membranes
 
-Meshname = 'QCube';%'Mediummemsphere'; % I mesh-detail-rekkefølge: HQMemsphere,SMemSphere Membramewsphere
+Meshname = 'MCube';%'Mediummemsphere'; % I mesh-detail-rekkefølge: HQMemsphere,SMemSphere Membramewsphere
 
 %Meshname = 'QMembrane'; % HQMembrane,UMembrane, %MMembrane, QMembrane
-modes = 0.2:0.1:4;%0.4:0.2:1.4;%
+modes = 0.5:0.5:5;%0.4:0.2:1.4;%
 Energies = zeros(length(modes),length(Phys_groups)+1);%zeros(length(0.2:0.2:2),1);
 InitEnergy = Energies;
 simnum=0;
@@ -32,7 +32,7 @@ ispulse = 1;
 
 
 output_folder = 'paraview/animation/Membrane';
-steps=2000;    % Number of time steps.
+steps=200;    % Number of time steps.
 NumberOfPics = steps;
 granularity = 0.01;
 OLT = 0.02;
@@ -47,8 +47,9 @@ tic
 toc
 
 % TimeIntegrator.m-prepping:
-FM_up = -Mmod_inv*sum(Fmat_up,2);
-FM_acc = -Mmod_inv*F_acc;
+FM_up = Mmod_inv*sum(Fmat_up,2);
+FM_acc = Mmod_inv*F_acc;
+F_cur = @(t) -FM_up*(plateDisp(t)+plateDisp(t-dt))-(plateAcc(t)+plateAcc(t-dt))*FM_acc;
 
 
 for harmonicMode = modes%0.2:0.2:2 % Harmonic mode (2n+1)
@@ -65,8 +66,6 @@ vtktitle
 omega = harmonicMode*base_omega;
 plateDisp = @(t) -OLT*((sin(omega*t))).*(ispulse*t<(2*pi/omega));
 plateAcc = @(t) -omega^2*plateDisp(t);
-
-F_cur = @(t) (FM_up-omega^2*FM_acc)*(plateDisp(t)+plateDisp(t-dt));
 
 wvel = omega/(harmonicMode*pi/4);
 %AnalyticSolution = @(x,t) plateDisp(t+(x-1)/wvel) - plateDisp(t-(x+3)/wvel).*(wvel*t>=(x+3)) + plateDisp(t+(x-5)/wvel).*(wvel*t>=(5-x)) - plateDisp(t-(x+7)/wvel).*(wvel*t>=(7+x));

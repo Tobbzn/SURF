@@ -11,7 +11,7 @@ end
 [p, tri, tetr] = loadGeo(GeoName);
 boundary = unique(tri);
 [A, M] = MassAndStiffnessMatrixGeneral(tetr,p,C, rho, Phys_groups);%,Cs,rhop,rhos);
-spy(M)
+%spy(M)
 %--------------------------------------------
 disp('Scaling time and frequency')
 szU=size(A,1);              %dimension of our system.
@@ -45,9 +45,9 @@ vel=zeros(szU-length(upperNodes)-length(lowerNodes)-length(x_plates)-length(y_pl
 %Getting out modified matrices:
 [Amod Mmod Fmat_up Fmat_low F_acc] = modifiedMatricesV3(A,M,upperNodes,lowerNodes, x_plates, y_plates);
 I = eye(size(Amod,1));
-Mmod_inv = Mmod\I;
+Mmod_inv = inv(Mmod);
 K1 = Mmod_inv*Amod;
-K2 = (I+(0.25*dt^2)*K1)\I;
+K2 = inv(I+(0.25*dt^2)*K1);
 
 disp('Assembly done')
 end

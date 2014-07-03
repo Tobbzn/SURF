@@ -2,7 +2,7 @@
 %FL_const = -2*(Fmat_low*uz_low);
 %F_cur = @(t) FL_const - Fmat_up*(2*uz_up + (plateDisp(t)+plateDisp(t-dt)))-(plateAcc(t)+plateAcc(t-dt))*F_acc;
 Utemp_last = zeros(size(FM_acc));%Amod\F_const;
-u0 = putDirichletBackV2(Utemp_last,lowerNodes,upperNodes,uz_low,uz_up,x_plates,y_plates);
+%u0 = putDirichletBackV2(Utemp_last,lowerNodes,upperNodes,uz_low,uz_up,x_plates,y_plates);
 %U = full(u0);
 U = zeros(szU,1);
 disp('Starting time integration')
@@ -21,7 +21,7 @@ for i=1:steps
 %          n=n+1;
 %      end
     t =T0+(i-1)*dt;
-    Utemp_cur =  K2*(2*Utemp_last + dt*vel + (0.25*dt^2)*((F_cur(t))))-Utemp_last;
+    Utemp_cur =  K2*(2*Utemp_last + dt*vel + (0.25*dt^2)*(F_cur(t)))-Utemp_last;
     utemp = putDirichletBackV2(Utemp_cur,lowerNodes,upperNodes,uz_low,uz_up+plateDisp(t),x_plates,y_plates);
     U = utemp;
     Ux(:,i) = U(1:3:end-2); % For transmisjonsregning
@@ -34,6 +34,9 @@ for i=1:steps
     %waitbar(i/steps);
 end
 toc
+
+[e2, E2, E2_analytic,DM2] = energy_norm(tetr,Ux,Uy,Uz,Phys_groups,dt,steps,OLT,omega,p,wvel,rho);
+Energies(
 
 % TranNode = max(abs(Uz(MarkerNode,:)))/OLT;% Transmisjonskoeffisient
 % 
