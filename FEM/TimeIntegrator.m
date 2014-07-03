@@ -35,8 +35,11 @@ for i=1:steps
 end
 toc
 
-[e2, E2, E2_analytic,DM2] = energy_norm(tetr,Ux,Uy,Uz,Phys_groups,dt,steps,OLT,omega,p,wvel,rho);
-Energies(simnum,:) = [e2(3,:),E2];
+[e1, E1, E1_analytic,DM1] = energy_norm(tetr,Ux(:,1:floor(steps/2)),Uy(:,1:floor(steps/2)),Uz(:,1:floor(steps/2)),Phys_groups,dt,floor(steps/2),OLT,omega,p,wvel,rho);
+[e2, E2, E2_analytic,DM2] = energy_norm(tetr,Ux(:,ceil(steps/2):end),Uy(:,ceil(steps/2):end),Uz(:,ceil(steps/2):end),Phys_groups,dt,steps-floor(steps/2),OLT,omega,p,wvel,rho);
+[e3, E3, E3_analytic,DM3] = energy_norm(tetr,Ux,Uy,Uz,Phys_groups,dt,steps,OLT,omega,p,wvel,rho);
+
+Energies(simnum,:) = [e3(3,:),E1,E2,E3];
 
 % TranNode = max(abs(Uz(MarkerNode,:)))/OLT;% Transmisjonskoeffisient
 % 

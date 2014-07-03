@@ -24,15 +24,15 @@ rho = 1; % Cube
 Meshname = 'QCube';%'Mediummemsphere'; % I mesh-detail-rekkefølge: HQMemsphere,SMemSphere Membramewsphere
 
 %Meshname = 'QMembrane'; % HQMembrane,UMembrane, %MMembrane, QMembrane
-modes = 0.2:0.1:4;%0.4:0.2:1.4;%
-Energies = zeros(length(modes),length(Phys_groups)+1);%zeros(length(0.2:0.2:2),1);
+modes = 0.8:0.05:1.2;%0.2:0.05:4;%0.4:0.2:1.4;%
+Energies = zeros(length(modes),length(Phys_groups)+3);%zeros(length(0.2:0.2:2),1);
 InitEnergy = Energies;
 simnum=0;
 ispulse = 1;
 
 
 output_folder = 'paraview/animation/Membrane';
-steps=2000;    % Number of time steps.
+steps=500;    % Number of time steps.
 NumberOfPics = steps;
 granularity = 0.01;
 OLT = 0.02;
