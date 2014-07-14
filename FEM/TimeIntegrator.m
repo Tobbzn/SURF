@@ -13,17 +13,18 @@ n=1;
 Uz=zeros(szU/3,steps);
 Ux=Uz;
 Uy=Uz;
+DirError = 0;
 %h = waitbar(0,'Pictures taken');
 tic
 for i=1:steps
-%      if i==1||(floor(NumberOfPics*i/steps)>floor(NumberOfPics*(i-1)/steps))
-%          State_to_vtk(output_folder,vtktitle,n,szU,tetr(:,1:4),p,U);
-%          n=n+1;
-%      end
+%         if i==1||(floor(NumberOfPics*i/steps)>floor(NumberOfPics*(i-1)/steps))
+%             State_to_vtk(output_folder,vtktitle,n,szU,tetr(:,1:4),p,U);
+%             n=n+1;
+%         end
     t =T0+(i-1)*dt;
     Utemp_cur =  K2*(2*Utemp_last + dt*vel + (0.25*dt^2)*(F_cur(t)))-Utemp_last;
-    utemp = putDirichletBackV2(Utemp_cur,lowerNodes,upperNodes,uz_low,uz_up+plateDisp(t),x_plates,y_plates);
-    U = utemp;
+    U = putDirichletBackV3(Utemp_cur,lowerNodes,upperNodes,uz_low,uz_up+plateDisp(t),x_plates,y_plates);
+    
     Ux(:,i) = U(1:3:end-2); % For transmisjonsregning
 
     Uy(:,i) = U(2:3:end-1); % For transmisjonsregning

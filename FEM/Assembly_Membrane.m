@@ -43,11 +43,11 @@ vel=zeros(szU-length(upperNodes)-length(lowerNodes)-length(x_plates)-length(y_pl
 
 
 %Getting out modified matrices:
-[Amod Mmod Fmat_up Fmat_low F_acc] = modifiedMatricesV3(A,M,upperNodes,lowerNodes, x_plates, y_plates);
+[Amod Mmod Fmat_up Fmat_low F_acc] = modifiedMatricesV4(A,M,upperNodes,lowerNodes, x_plates, y_plates);
 I = eye(size(Amod,1));
 Mmod_inv = inv(Mmod);
-K1 = Mmod_inv*Amod;
-K2 = inv(I+(0.25*dt^2)*K1);
+K1 = full(Mmod_inv*Amod);
+K2 = full(inv(I+(0.25*dt^2)*K1));
 
 disp('Assembly done')
 end

@@ -65,6 +65,7 @@ for j=1:length(phys_groups)
     end
 end
 %close(h)
+sum(sum(abs(A-Avar)))
 A = sparse(A);
 M = sparse(M);
 end

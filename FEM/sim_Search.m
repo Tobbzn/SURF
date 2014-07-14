@@ -7,36 +7,38 @@ addpath(genpath('../Converters'));
 %Polymer:
 X = 1;%15*10^(-6); %Length scale.
 
-Phys_groups = 0;
+%Meshname = 'Mediummemsphere';% I mesh-detail-rekkefølge: HQMemsphere,SMemSphere Membramewsphere
 %Phys_groups = [70,71,72, 133, 134]; % < Memspheres 
-%Phys_groups =  [70,71,72]; % < Membranes
-
-E = 1; %Cube
-%E = [1,100,1,100,100];% Memspheres
-%E = 10^(0)*[1,1,1];% Membranes
-v = 0; %Cube
+%E = [1,1,1,1,1];% Memspheres
 %v = [0,0,0,0,0]; % Memspheres
-%v = [0,0,0]; % Membranes
-rho = 1; % Cube
-%rho = [1,100,1,100,100];% Memspheres
-%rho = [1,1,1];% Membranes
+%rho = [1,1,1,1,1];% Memspheres
 
-Meshname = 'MCube';%'Mediummemsphere'; % I mesh-detail-rekkefølge: HQMemsphere,SMemSphere Membramewsphere
+Meshname = 'MCube';
+Phys_groups = 0;
+E = 1; %Cube
+v = 0; %Cube
+rho = 1; % Cube
 
 %Meshname = 'QMembrane'; % HQMembrane,UMembrane, %MMembrane, QMembrane
-modes = 0.2:0.02:6;%0.2:0.05:4;%0.4:0.2:1.4;%
-Energies = zeros(length(modes),length(Phys_groups)+3);%zeros(length(0.2:0.2:2),1);
+%Phys_groups =  [70,71,72]; % < Membranes
+%E = 10^(0)*[1,1,1];% Membranes
+%v = [0,0,0]; % Membranes
+%rho = [1,1,1];% Membranes
+
+
+modes = 0.3:0.01:3; %0.2:0.05:4;%0.4:0.2:1.4;%
+Energies = zeros(length(modes),length(Phys_groups)+3); %zeros(length(0.2:0.2:2),1);
 InitEnergy = Energies;
 simnum=0;
 ispulse = 1;
 
 
+
 output_folder = 'paraview/animation/Membrane';
 steps=20000;    % Number of time steps.
 NumberOfPics = steps;
-granularity = 0.002;
+granularity = 0.01;
 OLT = 0.02;
-
 
 
 %Parameters for time integration:
@@ -45,7 +47,7 @@ T0=0;                       %start time.
 tic
 [p, tri, tetr, szU, K1, K2, Amod, Mmod_inv, vel,Fmat_up, Fmat_low, F_acc, lowerNodes, uz_low,upperNodes, uz_up, base_omega, dt, x_plates, y_plates] = Assembly_Membrane(Meshname,Phys_groups, E,v,rho, 1, granularity);
 toc
-
+%K1 = full(K1);
 % TimeIntegrator.m-prepping:
 FM_up = -Mmod_inv*sum(Fmat_up,2);
 FM_acc = -Mmod_inv*F_acc;
@@ -54,14 +56,14 @@ FM_acc = -Mmod_inv*F_acc;
 for harmonicMode = modes%0.2:0.2:2 % Harmonic mode (2n+1)
 simnum = simnum+1;
 %Parameters for Paraview printing:
-ExtraNameNote = 'search_';
+ExtraNameNote = 'search_atwork_';
 
 modestring = sprintf('%d',harmonicMode);
 vtktitle = [Meshname '_' ExtraNameNote modestring(1:(min(3,length(modestring)))) ];
 if ispulse
     vtktitle = [vtktitle 'p' num2str(ispulse)];
 end
-vtktitle
+vtktitle% = 'TESTNAME';
 omega = harmonicMode*base_omega;
 plateDisp = @(t) -OLT*((sin(omega*t))).*(ispulse*t<(2*pi/omega));
 plateAcc = @(t) -omega^2*plateDisp(t);
