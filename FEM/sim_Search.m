@@ -13,7 +13,7 @@ X = 1;%15*10^(-6); %Length scale.
 %v = [0,0,0,0,0]; % Memspheres
 %rho = [1,1,1,1,1];% Memspheres
 
-Meshname = 'MCube';
+Meshname = 'QCube';
 Phys_groups = 0;
 E = 1; %Cube
 v = 0; %Cube
@@ -26,18 +26,18 @@ rho = 1; % Cube
 %rho = [1,1,1];% Membranes
 
 
-modes = 0.3:0.01:3; %0.2:0.05:4;%0.4:0.2:1.4;%
+modes = 1;%0.8:0.02:1.2; %0.2:0.05:4;%0.4:0.2:1.4;%
 Energies = zeros(length(modes),length(Phys_groups)+3); %zeros(length(0.2:0.2:2),1);
 InitEnergy = Energies;
 simnum=0;
-ispulse = 1;
+ispulse = 0;
 
 
 
 output_folder = 'paraview/animation/Membrane';
-steps=20000;    % Number of time steps.
+steps=round(pi*1000);    % Number of time steps.
 NumberOfPics = steps;
-granularity = 0.01;
+granularity = 0.02;
 OLT = 0.02;
 
 

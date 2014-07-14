@@ -1,7 +1,7 @@
 function [F f] = discretefourier( Uz,steps,dt,MarkerNode)
 
-t=(0:steps-1)*dt;
-L=steps*dt;
+%t=(0:steps-1)*dt;
+L=steps;
 Fs=1/dt;
 
 NFFT = 2^nextpow2(steps);
