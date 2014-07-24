@@ -21,12 +21,12 @@ X = 1;%15*10^(-6); %Length scale.
 
 Meshname = 'QMembrane'; % HQMembrane,UMembrane, %MMembrane, QMembrane
 Phys_groups =  [70,71,72]; % < Membranes
-E = 10^(0)*[120,9.3,120];% Membranes
+E = 10^(0)*[1,1,1];% Membranes
 v = [0,0,0]; % Membranes
-rho = [8.96,1.1,8.96];% Membranes
+rho = [1,1,1];% Membranes
 
 
-modes = 0.5:0.5:4;%0.8:0.02:1.2; %0.2:0.05:4;%0.4:0.2:1.4;%
+modes = 1;%0.8:0.02:1.2; %0.2:0.05:4;%0.4:0.2:1.4;%
 Energies = zeros(length(modes),length(Phys_groups)+3); %zeros(length(0.2:0.2:2),1);
 InitEnergy = Energies;
 simnum=0;
@@ -37,7 +37,7 @@ ispulse = 0;
 output_folder = 'paraview/animation/Membrane';
 steps=round(pi*1000);    % Number of time steps.
 NumberOfPics = steps;
-granularity = 0.1;
+granularity = 0.02;
 OLT = 0.02;
 
 
@@ -45,7 +45,7 @@ OLT = 0.02;
 T0=0;                       %start time.
 %szU=size(A,1);              %dimension of our system.
 tic
-[p, tri, tetr, szU, K1, K2, Amod, Mmod_inv, vel,Fmat_up, Fmat_low, F_acc, lowerNodes, uz_low,upperNodes, uz_up, base_omega, dt, x_plates, y_plates] = Assembly_Membrane(Meshname,Phys_groups, E,v,rho, 10/4, granularity);
+[p, tri, tetr, szU, K1, K2, Amod, Mmod_inv, vel,Fmat_up, Fmat_low, F_acc, lowerNodes, uz_low,upperNodes, uz_up, base_omega, dt, x_plates, y_plates] = Assembly_Membrane(Meshname,Phys_groups, E,v,rho, 1, granularity);
 toc
 %K1 = full(K1);
 % TimeIntegrator.m-prepping:
@@ -112,5 +112,5 @@ end
 lowestmode = sprintf('%d',min(modes));
 highestmode = sprintf('%d',max(modes));
 
-EnergySaver(modes',Energies, [Meshname '_calibration_' lowestmode(1:(min(3,length(lowestmode)))) '-' highestmode(1:(min(3,length(highestmode))))])
+EnergySaver(modes',Energies, [Meshname '_energydata_' lowestmode(1:(min(3,length(lowestmode)))) '-' highestmode(1:(min(3,length(highestmode))))])
 disp('Done');

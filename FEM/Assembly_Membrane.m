@@ -19,7 +19,7 @@ maxz=max(p(:,3));     %Total radius of the ball with outer shell.
 lambdap = (E.*v)./((1+v).*(1-2*v));
 mup = E./(2*(1+v));
 harmonicK = pi/(4*maxz); %Standing wave number with node at x such that kx = pi/2
-omega= N*harmonicK*sqrt((lambdap(1) + 2*mup(1))/rho(1)); % Frequency of upperplate by w = kv. Coefficient should be an odd k-multiple for damping.
+omega= N*harmonicK*sqrt((lambdap(2) + 2*mup(2))/rho(2)); % Frequency of upperplate by w = kv. Coefficient should be an odd k-multiple for damping.
 dt = granularity/omega; % Timestep granularity
 %Getting out nodes on the Dirichlet boundary:
 
